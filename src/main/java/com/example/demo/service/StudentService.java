@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.AddStudentRequestDto;
 import com.example.demo.dto.StudentDto;
+import com.example.demo.dto.StudentTeacherDto;
 import jakarta.persistence.Id;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface StudentService {
     StudentDto updateStudentbyId(Long id, AddStudentRequestDto addStudentRequestDto);
 
     StudentDto updateStudentPartialbyId(Long id, Map<String, Object> updates);
+
+    List<StudentTeacherDto> getAllStudentsTeacher();
 }

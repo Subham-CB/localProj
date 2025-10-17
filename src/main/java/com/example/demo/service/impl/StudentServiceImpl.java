@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.AddStudentRequestDto;
 import com.example.demo.dto.StudentDto;
+import com.example.demo.dto.StudentTeacherDto;
 import com.example.demo.entity.Student;
 import com.example.demo.repository.StudentRepo;
 import com.example.demo.service.StudentService;
@@ -24,6 +25,20 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = studentRepo.findAll();
         List<StudentDto> studentDtoList = students.stream().map(student-> new StudentDto(student.getId(),student.getName(),student.getEmail())).toList();
         return studentDtoList;
+    }
+
+
+    public List<StudentTeacherDto> getAllStudentsTeacher(){
+        List<Student> students =studentRepo.findAll();
+        List<StudentTeacherDto> studentTeacherDtos = students.stream().map(student -> {
+                                                     StudentTeacherDto studentTeacherDto=modelMapper.map(student, StudentTeacherDto.class);
+                                                     if(student.getTeachers()!=null){
+                                                         studentTeacherDto.setTeacherName(student.getTeachers().getName());
+                                                     } else {
+                                                         studentTeacherDto.setTeacherName("no teacher name found");
+                                                     }
+                                                     return studentTeacherDto;}).toList();
+        return studentTeacherDtos;
     }
 
     @Override

@@ -1,16 +1,17 @@
 package com.example.demo.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class StudentDto {
-    private  Long Id;
-    private  String name;
-    private String email;
-
-
+public class TeacherDto {
+    private Long id;
+    private String name;
+    private String subject;
 }

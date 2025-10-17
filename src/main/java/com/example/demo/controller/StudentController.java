@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AddStudentRequestDto;
 import com.example.demo.dto.StudentDto;
+import com.example.demo.dto.StudentTeacherDto;
 import com.example.demo.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,16 @@ public class StudentController {
         return  ResponseEntity.ok(studentServ.getAllStudents());
     }
 
+    @GetMapping("/wt")
+    public ResponseEntity<List<StudentTeacherDto>> getAllStudentTeacher(){
+        return  ResponseEntity.ok(studentServ.getAllStudentsTeacher());
+    }
+
     @GetMapping("/{id}")
     public StudentDto getStudentbyId(@PathVariable Long id){
         return studentServ.getStudentsById(id);
     }
+
 
     @PostMapping
     public ResponseEntity<StudentDto> createNewStudent(@RequestBody  AddStudentRequestDto addStudentRequestDto){
