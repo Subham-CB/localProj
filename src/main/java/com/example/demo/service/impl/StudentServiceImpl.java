@@ -2,14 +2,17 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.AddStudentRequestDto;
 import com.example.demo.dto.StudentDto;
-import com.example.demo.dto.StudentTeacherDto;
+import com.example.demo.dto.StudentWithTeacherDto;
 import com.example.demo.entity.Student;
+import com.example.demo.entity.Teacher;
 import com.example.demo.repository.StudentRepo;
+import com.example.demo.repository.TeacherRepo;
 import com.example.demo.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,27 +21,63 @@ import java.util.Map;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepo studentRepo;
+    private final TeacherRepo teacherRepo;
     private final ModelMapper modelMapper;
 
     @Override
     public List<StudentDto> getAllStudents(){
         List<Student> students = studentRepo.findAll();
-        List<StudentDto> studentDtoList = students.stream().map(student-> new StudentDto(student.getId(),student.getName(),student.getEmail())).toList();
+        List<StudentDto> studentDtoList = students.stream().map(student-> modelMapper.map(student,StudentDto.class)).toList();
         return studentDtoList;
     }
 
-
-    public List<StudentTeacherDto> getAllStudentsTeacher(){
+    @Override
+    public List<StudentWithTeacherDto> getAllStudentsTeacher(){
         List<Student> students =studentRepo.findAll();
-        List<StudentTeacherDto> studentTeacherDtos = students.stream().map(student -> {
-                                                     StudentTeacherDto studentTeacherDto=modelMapper.map(student, StudentTeacherDto.class);
+        List<StudentWithTeacherDto> studentTeacherDtos = students.stream().map(student -> {
+                                                     StudentWithTeacherDto studentTeacherDto=modelMapper.map(student, StudentWithTeacherDto.class);
                                                      if(student.getTeachers()!=null){
-                                                         studentTeacherDto.setTeacherName(student.getTeachers().getName());
+                                                         List<String> teacherNames = student.getTeachers().stream().map(Teacher::getName).toList();
+                                                         studentTeacherDto.setTeacherName(teacherNames);
                                                      } else {
-                                                         studentTeacherDto.setTeacherName("no teacher name found");
+                                                         studentTeacherDto.setTeacherName(List.of("no teacher name found"));
                                                      }
                                                      return studentTeacherDto;}).toList();
         return studentTeacherDtos;
+    }
+
+    @Override
+    public void assignTeachertoStudent(Long studentId, Long teacherId) {
+        Student student = studentRepo.findById(studentId).orElseThrow(()->new IllegalArgumentException("Student Id not found"));
+        Teacher teacher = teacherRepo.findById(teacherId).orElseThrow(()->new IllegalArgumentException("Teacher Id not found"));
+
+        if (student.getTeachers()==null){
+            student.setTeachers(new ArrayList<>());
+        }
+
+        if (!student.getTeachers().contains(teacher)){
+            student.getTeachers().add(teacher);
+            studentRepo.save(student);
+        }
+        else
+            throw new IllegalArgumentException("Student Teacher relation already exists");
+    }
+
+    @Override
+    public void removeTeacherFromStudent(Long studentId, Long teacherId) {
+        Student student = studentRepo.findById(studentId).orElseThrow(()->new IllegalArgumentException("Student Id not found"));
+        Teacher teacher = teacherRepo.findById(teacherId).orElseThrow(()->new IllegalArgumentException("Teacher Id not found"));
+
+        if (student.getTeachers()==null){
+            student.setTeachers(new ArrayList<>());
+        }
+
+        if (student.getTeachers().contains(teacher)){
+            student.getTeachers().remove(teacher);
+            studentRepo.save(student);
+        }
+        else
+            throw new IllegalArgumentException("No such relationship exists");
     }
 
     @Override

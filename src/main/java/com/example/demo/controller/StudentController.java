@@ -2,8 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AddStudentRequestDto;
 import com.example.demo.dto.StudentDto;
-import com.example.demo.dto.StudentTeacherDto;
+import com.example.demo.dto.StudentWithTeacherDto;
 import com.example.demo.service.StudentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/student")
 @RequiredArgsConstructor
+@Tag(name = "Student API")
 public class StudentController {
 
     private final StudentService studentServ;
@@ -29,7 +31,7 @@ public class StudentController {
     }
 
     @GetMapping("/wt")
-    public ResponseEntity<List<StudentTeacherDto>> getAllStudentTeacher(){
+    public ResponseEntity<List<StudentWithTeacherDto>> getAllStudentTeacher(){
         return  ResponseEntity.ok(studentServ.getAllStudentsTeacher());
     }
 
@@ -58,6 +60,18 @@ public class StudentController {
     @PatchMapping("/{id}")
     public ResponseEntity<StudentDto> updateStudentPartialbyId(@PathVariable Long id, @RequestBody Map<String,Object> updates){
         return ResponseEntity.ok(studentServ.updateStudentPartialbyId(id,updates));
+    }
+
+    @PatchMapping("/{studentId}/st/{teacherId}")
+    public ResponseEntity<Void> assignTeachertoStudent(@PathVariable Long studentId, Long teacherId){
+        studentServ.assignTeachertoStudent(studentId,teacherId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{studentId}/del_st/{teacherId}")
+    public ResponseEntity<Void> removeTeacherFromStudent(@PathVariable Long studentId, Long teacherId){
+        studentServ.removeTeacherFromStudent(studentId,teacherId);
+        return ResponseEntity.noContent().build();
     }
 
 

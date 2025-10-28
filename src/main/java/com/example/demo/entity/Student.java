@@ -1,23 +1,35 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 @Table(name = "student")
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
+    @SequenceGenerator(
+            name = "student_seq",
+            sequenceName = "student_id_seq",
+            allocationSize = 1
+    )
     private Long id;
+
     private String name;
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private Teacher teachers;
+    @ManyToMany
+   @JoinTable(name = "student_teacher",
+           joinColumns = @JoinColumn(name = "student_id"),
+         inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+  private List<Teacher> teachers;
+
 
 }

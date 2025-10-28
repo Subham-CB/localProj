@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 
-    @AllArgsConstructor
+@AllArgsConstructor
     @NoArgsConstructor
     @Data
-    public class StudentTeacherDto {
+    public class StudentWithTeacherDto {
         private  Long Id;
         private  String name;
         private String email;
-        private String teacherName;
+        private List<String> teacherName;
 
     }
 

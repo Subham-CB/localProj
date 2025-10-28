@@ -14,11 +14,17 @@ import java.util.List;
 public class Teacher {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_seq")
+    @SequenceGenerator(
+            name = "teacher_seq",
+            sequenceName = "teacher_id_seq",
+            allocationSize = 1
+    )
     private Long id;
+
     private String name;
     private String subject;
 
-    @OneToMany(mappedBy = "teachers")
+    @ManyToMany(mappedBy = "teachers")
     private List<Student> students;
 }
