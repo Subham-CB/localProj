@@ -36,8 +36,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public StudentDto getStudentbyId(@PathVariable Long id){
-        return studentServ.getStudentsById(id);
+    public StudentDto getStudentbyEmail(@PathVariable String email){
+        return studentServ.getStudentsByEmail(email);
     }
 
 

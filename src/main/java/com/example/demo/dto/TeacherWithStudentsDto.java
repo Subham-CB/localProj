@@ -14,6 +14,7 @@ import java.util.List;
         private Long id;
         private String name;
         private String subject;
+        private  String email;
 
         private List<StudentDto> students;
     }

@@ -81,8 +81,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public  StudentDto getStudentsById(Long Id){
-        Student students = studentRepo.findById(Id).orElseThrow(()-> new IllegalArgumentException("Student not found by Id"));
+    public  StudentDto getStudentsByEmail(String email){
+        Student students = studentRepo.findByEmail(email).orElseThrow(()-> new IllegalArgumentException("Student not found by Id"));
         StudentDto studentDto =  modelMapper.map(students, StudentDto.class);
 
         return studentDto;

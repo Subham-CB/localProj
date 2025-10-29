@@ -25,6 +25,9 @@ public class Teacher {
     private String name;
     private String subject;
 
+    @Column(unique = true)
+    private String email;
+
     @ManyToMany(mappedBy = "teachers")
     private List<Student> students;
 }

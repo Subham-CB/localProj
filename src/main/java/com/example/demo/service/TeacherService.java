@@ -10,11 +10,11 @@ import java.util.Map;
 
 public interface TeacherService {
 
-    TeacherDto getTeachersbyId(Long id);
+    TeacherDto getTeachersbyEmail(String email);
 
     List<TeacherDto> getAllTeachers();
 
-    TeacherWithStudentsDto getAllStudentbyTeacherId(Long id);
+    TeacherWithStudentsDto getAllStudentsbyEmail(String email);
 
     TeacherDto createNewteacher(AddTeacherRequestDto addTeacherRequestDto);
 

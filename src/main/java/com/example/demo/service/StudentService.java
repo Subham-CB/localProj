@@ -11,7 +11,7 @@ import java.util.Map;
 public interface StudentService {
 
     List<StudentDto> getAllStudents();
-    StudentDto getStudentsById(Long Id);
+    StudentDto getStudentsByEmail(String email);
     StudentDto createNewStudent(AddStudentRequestDto addStudentRequestDto);
 
     void deleteStudentbyId(Long id);

@@ -14,6 +14,6 @@ public class AddTeacherRequestDto {
     private String subject;
     @NotNull(message = "Name cannot be null")
     private String name;
-
-
+    @NotNull(message = "Email is required")
+    private String email;
 }

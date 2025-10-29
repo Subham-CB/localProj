@@ -33,14 +33,14 @@ public class TeacherController {
 
     }
 
-    @GetMapping("/alls/{id}")
-    public ResponseEntity<TeacherWithStudentsDto> getAllStudentsbyTeacherId(@PathVariable Long id){
-        return ResponseEntity.ok(teacherService.getAllStudentbyTeacherId(id));
+    @GetMapping("/alls/{email}")
+    public ResponseEntity<TeacherWithStudentsDto> getAllStudentsbyEmail(@PathVariable String email){
+        return ResponseEntity.ok(teacherService.getAllStudentsbyEmail(email));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TeacherDto> getTeacherbyId(@PathVariable Long id){
-    return ResponseEntity.ok(teacherService.getTeachersbyId(id));
+    @GetMapping("/{email}")
+    public ResponseEntity<TeacherDto> getTeachersbyEmail(@PathVariable String email){
+    return ResponseEntity.ok(teacherService.getTeachersbyEmail(email));
 }
 
     @PostMapping

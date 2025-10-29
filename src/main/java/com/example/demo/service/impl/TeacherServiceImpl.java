@@ -27,8 +27,8 @@ public class TeacherServiceImpl implements TeacherService {
     private final ModelMapper modelMapper;
 
     @Override
-    public TeacherDto getTeachersbyId(Long id){
-        Teacher teacher = teacherRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Enter Correct id"));
+    public TeacherDto getTeachersbyEmail(String email){
+        Teacher teacher = teacherRepo.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Enter Correct id"));
         return modelMapper.map(teacher,TeacherDto.class);
     }
 
@@ -39,13 +39,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public TeacherWithStudentsDto getAllStudentbyTeacherId(Long id) {
+    public TeacherWithStudentsDto getAllStudentsbyEmail(String email) {
 
-        Teacher teacher = teacherRepo.findById(id).orElseThrow(()->new IllegalArgumentException("No teacher Found"));
+        Teacher teacher = teacherRepo.findByEmail(email).orElseThrow(()->new IllegalArgumentException("No teacher Found"));
         TeacherWithStudentsDto teacherWithStudentsDto = new TeacherWithStudentsDto();
         teacherWithStudentsDto.setId(teacher.getId());
         teacherWithStudentsDto.setName(teacher.getName());
         teacherWithStudentsDto.setSubject(teacher.getSubject());
+        teacherWithStudentsDto.setEmail(teacher.getEmail());
 
         List<StudentDto> studentDtoList = teacher.getStudents().stream().map(student -> {
                                            StudentDto studentDto = new StudentDto();
@@ -93,6 +94,9 @@ public class TeacherServiceImpl implements TeacherService {
                     break;
                 case "subject":
                     teacher.setSubject((String) value);
+                    break;
+                case "email":
+                    teacher.setEmail((String) value);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid input");
